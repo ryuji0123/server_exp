@@ -1,0 +1,4 @@
+192.168.160.1 - - [26/Nov/2022:10:08:23 +0000] "GET / HTTP/1.1" 200 67 "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/106.0.0.0 Safari/537.36"
+192.168.160.1 - - [26/Nov/2022:10:08:25 +0000] "GET /favicon.ico HTTP/1.1" 499 0 "http://localhost/" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/106.0.0.0 Safari/537.36"
+192.168.160.1 - - [26/Nov/2022:10:09:16 +0000] "GET / HTTP/1.1" 200 36 "-" "curl/7.77.0"
+192.168.160.1 - - [01/Dec/2022:16:34:24 +0000] "GET / HTTP/1.1" 200 67 "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/106.0.0.0 Safari/537.36"
