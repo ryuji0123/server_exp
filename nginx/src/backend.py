@@ -25,6 +25,10 @@ def limited_connect():
     name = "Hello from connection limited flask\n"
     return name
 
+@app.route('/limited_request')
+def limited_request():
+    name = "Hello from request limited flask\n"
+    return name
 
 
 if __name__ == "__main__":
