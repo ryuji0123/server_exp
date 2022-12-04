@@ -30,9 +30,14 @@ def limited_request():
     name = "Hello from request limited flask\n"
     return name
 
+@app.route('/ssl')
+def ssl():
+    response_str = "https response\n"
+    return response_str
+
 
 if __name__ == "__main__":
     parser = ArgumentParser()
     parser.add_argument("-p", "--port", default=80)
     args = parser.parse_args()
-    app.run(debug=True, host='0.0.0.0', port=args.port)
+    app.run(debug=True, host='127.0.0.1', port=args.port)

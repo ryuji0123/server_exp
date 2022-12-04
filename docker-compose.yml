@@ -2,12 +2,11 @@ version: '3'
 
 services:
   dns:
-    build:
-      context: ./dns/
+    build: ./dns
     command: named -c /etc/bind/named.conf -g -u named
     container_name: dns
     ports:
-      - 53:53
+      - 53:53/tcp
       - 53:53/udp
     restart: always
     volumes:
@@ -15,7 +14,8 @@ services:
       - ./dns/etc/bind/zone/:/etc/bind/zone
   
   elasticsearch:
-    image: docker.elastic.co/elasticsearch/elasticsearch:8.0.0
+    build: ./elasticsearch
+    container_name: elasticsearch
     environment:
       - discovery.type=single-node
       - xpack.security.enabled=false
@@ -25,24 +25,26 @@ services:
       memlock:
         hard: -1
         soft: -1
-    # volumes:
-    #   - ./elasticsearch/usr/share/elasticsearch/data:/usr/share/elasticsearch/data
+    volumes:
+      - ./elasticsearch/usr/share/elasticsearch/data:/usr/share/elasticsearch/data
 
   fluentd:
     build: ./fluentd
+    container_name: fluentd
     volumes:
+      # fluentd configurations
       - ./fluentd/fluentd/etc:/fluentd/etc
+      # nginx logs
       - ./nginx/var/log/nginx:/var/log/nginx
     ports:
-      - 24224:24224
-    # depends_on:
-    #   - elasticsearch
+      - 24224:24224/tcp
+      - 24224:24224/udp
+    depends_on:
+      - elasticsearch
   
   kibana:
-    image: docker.elastic.co/kibana/kibana:8.0.0
-    environment:
-      ELASTICSEARCH_HOSTS: http://elasticsearch:9200
-    # platform: linux/amd64
+    build: ./kibana
+    container_name: kibana
     ports:
       - 5601:5601
   
@@ -52,11 +54,17 @@ services:
     command: sh /src/init.sh
     container_name: nginx
     ports:
-      - 80:80
+      - 8000:80/tcp
+      - 443:443
     tty: true
     volumes:
+      # ssl configurations
+      - ./nginx/etc/certs:/etc/certs
+      # nginx configurations
       - ./nginx/etc/nginx/nginx.conf:/etc/nginx/nginx.conf
       - ./nginx/etc/nginx/conf.d/:/etc/nginx/conf.d/
+      # flask source code
       - ./nginx/src/:/src/
       - ./nginx/usr/share/nginx/html/:/usr/share/nginx/html/
+      # nginx logs
       - ./nginx/var/log/nginx:/var/log/nginx
